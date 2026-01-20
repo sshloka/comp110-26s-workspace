@@ -4,14 +4,16 @@ __author__: str = "730886707"
 
 
 def main_planner(guests: int) -> None:
-    """Function that brings all of the below functions together."""
-    tea_count = tea_bags(people=guests)
-    treat_count = treats(people=guests)
-    total_cost = cost(tea_count, treat_count)
+    """Entrypoint Function of the Program."""
     print("A Cozy Tea Party for " + str(guests) + " People!")
-    print("Tea Bags: " + str(tea_count))
-    print("Treats: " + str(treat_count))
-    print("Cost: $" + str(total_cost))
+    print("Tea Bags: " + str(tea_bags(people=guests)))
+    print("Treats: " + str(treats(people=guests)))
+    print(
+        "Cost: $"
+        + str(
+            cost(tea_count=tea_bags(people=guests), treat_count=treats(people=guests))
+        )
+    )
 
 
 def tea_bags(people: int) -> int:
@@ -21,15 +23,12 @@ def tea_bags(people: int) -> int:
 
 def treats(people: int) -> int:
     """Function that computes the number of treats needed."""
-    teas = tea_bags(people=people)
-    treats = teas * 1.5
-    return int(treats)
+    return int(tea_bags(people=people) * 1.5)
 
 
 def cost(tea_count: int, treat_count: int) -> float:
     """Function that computes the cost of both the tea bags and the treats."""
-    cost = (tea_count * 0.50) + (treat_count * 0.75)
-    return cost
+    return (tea_count * 0.50) + (treat_count * 0.75)
 
 
 if __name__ == "__main__":
