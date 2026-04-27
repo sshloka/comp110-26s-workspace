@@ -1,6 +1,6 @@
 """Data related utility functions."""
 
-__author__ = ["", ""]
+__author__ = ["730886707", "730862636"]
 
 from csv import DictReader
 
@@ -51,7 +51,10 @@ def convert_columns_to_int(
 
     return data_converted
 
+
 """These are the functions we wrote/will write in class!"""
+
+
 def read_csv_rows(filename: str) -> list[dict[str, str]]:
     """Read the rows of a CSV into a 'table'."""
     result: list[dict[str, str]] = []
@@ -90,5 +93,83 @@ def columnar(row_table: list[dict[str, str]]) -> dict[str, list[str]]:
     first_row: dict[str, str] = row_table[0]
     for column in first_row:
         result[column] = column_values(row_table, column)
+
+    return result
+
+
+def head(table: dict[str, list[str]], n: int) -> dict[str, list[str]]:
+    """Produce a new column-based table with only the first n rows of data"""
+    # Create an empty dictionary that will be returned
+    result: dict[str, list[str]] = {}
+
+    # Loop through each of the columns in the table
+    for column in table:
+        # Create an empty list to store the first n values
+        column_values: list[str] = []
+
+        # Loop through the first n items of the table's column
+        rows_to_get = min(n, len(table[column]))
+
+        for i in range(rows_to_get):
+            # Append each item to the list
+            column_values.append(table[column][i])
+
+        # Assign the produced list to the dictionary
+        result[column] = column_values
+
+    return result
+
+
+def select(table: dict[str, list[str]], names: list[str]) -> dict[str, list[str]]:
+    """Produce a new columb-based table with onyl a specific subset of columns."""
+    # Establish a new empty dictionary to serve as the returned dictionary.
+    result: dict[str, list[str]] = {}
+
+    # Loop through each of the columns in the second parameter (names)
+    for name in names:
+        # Assign the list of values from the input dictionary to the result dictionary
+        result[name] = table[name]
+
+    return result
+
+
+def concat(
+    table_1: dict[str, list[str]], table_2: dict[str, list[str]]
+) -> dict[str, list[str]]:
+    """Produce a new column-based table with two column-based tables combined."""
+    # Establish an empty dictionary for the results
+    result: dict[str, list[str]] = {}
+
+    # Loop through each of the columns in the first parameter
+    for column in table_1:
+        # Assign the list of values to the result dictionary
+        result[column] = table_1[column][:]
+
+    # Loop through each of the columns in the second parameter
+    for column in table_2:
+        if column in result:
+            # If the key is already there, extend the existing list
+            result[column] += table_2[column]
+        else:
+            # If the key is not there, create a new entry
+            result[column] = table_2[column][:]
+
+    return result
+
+
+def count(values: list[str]) -> dict[str, int]:
+    """Given a list of strings, produce a dictionary of unique value frequencies."""
+    # Establish an empty dictionary for the result.
+    result: dict[str, int] = {}
+
+    # Loop through each item in the input list
+    for item in values:
+        # Check to see if the item is already a key in the dictionary
+        if item in result:
+            # If found, increment the existing count by 1
+            result[item] += 1
+        else:
+            # If not found, initialize the count to 1
+            result[item] = 1
 
     return result
